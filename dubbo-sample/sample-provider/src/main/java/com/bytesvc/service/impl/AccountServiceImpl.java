@@ -1,6 +1,8 @@
 package com.bytesvc.service.impl;
 
+import org.bytesoft.bytetcc.supports.spring.aware.CompensableContextAware;
 import org.bytesoft.compensable.Compensable;
+import org.bytesoft.compensable.CompensableContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,11 +12,12 @@ import com.bytesvc.service.IAccountService;
 
 @Service("accountService")
 @Compensable(interfaceClass = IAccountService.class, confirmableKey = "accountServiceConfirm", cancellableKey = "accountServiceCancel")
-public class AccountServiceImpl implements IAccountService {
+public class AccountServiceImpl implements IAccountService, CompensableContextAware {
 
 	@SuppressWarnings("restriction")
 	@javax.annotation.Resource(name = "jdbcTemplate")
 	private JdbcTemplate jdbcTemplate;
+	private CompensableContext compensableContext;
 
 	@Transactional(rollbackFor = ServiceException.class)
 	public void increaseAmount(String acctId, double amount) throws ServiceException {
@@ -34,6 +37,10 @@ public class AccountServiceImpl implements IAccountService {
 		}
 		System.out.printf("exec decrease: acct= %s, amount= %7.2f%n", acctId, amount);
 		// throw new ServiceException("rollback");
+		this.compensableContext.setVariable("data-after-restart", "11112222");
 	}
 
+	public void setCompensableContext(CompensableContext aware) {
+		this.compensableContext = aware;
+	}
 }

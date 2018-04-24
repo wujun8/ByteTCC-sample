@@ -44,3 +44,6 @@ bytetcc
 /springcloud-sample/sample-provider/.project
 /dubbo-sample/sample-provider/*.log
 /dubbo-sample/sample-consumer/*.log
+
+.idea
+*.iml
