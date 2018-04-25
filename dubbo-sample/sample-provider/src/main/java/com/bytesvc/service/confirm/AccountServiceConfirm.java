@@ -30,6 +30,7 @@ public class AccountServiceConfirm implements IAccountService, CompensableContex
 	@Transactional(rollbackFor = ServiceException.class)
 	public void decreaseAmount(String acctId, double amount) throws ServiceException {
 		int value = this.jdbcTemplate.update("update tb_account_one set frozen = frozen - ? where acct_id = ?", amount, acctId);
+		System.out.printf("data-after-restart: %s%n", this.compensableContext.getVariable("data-after-restart"));
 		if (value == 1) {
 			throw new ServiceException("ERROR!");
 		}
