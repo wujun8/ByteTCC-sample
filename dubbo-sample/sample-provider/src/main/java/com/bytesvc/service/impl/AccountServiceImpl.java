@@ -1,5 +1,6 @@
 package com.bytesvc.service.impl;
 
+import com.bytesvc.ext.TransactionContextRegistry;
 import org.bytesoft.compensable.Compensable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,9 @@ public class AccountServiceImpl implements IAccountService {
 		}
 		System.out.printf("exec decrease: acct= %s, amount= %7.2f%n", acctId, amount);
 		// throw new ServiceException("rollback");
+		String param1 = (String) TransactionContextRegistry.getInstance().getCurrentContextWrapper().getAttachment("p1");
+		System.out.println("p1 from consumer: " + param1);
+		TransactionContextRegistry.getInstance().getCurrentContextWrapper().addAttachment("p2", "new param");
 	}
 
 }

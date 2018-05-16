@@ -9,7 +9,7 @@
 		  http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
 	<dubbo:application name="sample-provider" />
-	<dubbo:provider timeout="15000" />
+	<dubbo:provider timeout="15000" filter="contextext"/>
 	<dubbo:consumer check="false" timeout="15000" />
 	<dubbo:protocol name="dubbo" port="20882" />
 	<dubbo:registry address="zookeeper://localhost:2181" />

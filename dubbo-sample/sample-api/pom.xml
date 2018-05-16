@@ -9,6 +9,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.bytesoft.sample</groupId>
+			<artifactId>context-ext</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+		<dependency>
 			<groupId>commons-dbutils</groupId>
 			<artifactId>commons-dbutils</artifactId>
 			<version>1.6</version>

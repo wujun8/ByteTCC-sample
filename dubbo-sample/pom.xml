@@ -17,9 +17,10 @@
 	</dependencies>
 
 	<modules>
+		<module>context-ext</module>
 		<module>sample-api</module>
 		<module>sample-provider</module>
 		<module>sample-consumer</module>
-	</modules>
+    </modules>
 
 </project>

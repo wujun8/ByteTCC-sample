@@ -15,7 +15,7 @@
 	<dubbo:registry address="localhost:2181" protocol="zookeeper" />
 
 	<dubbo:reference id="remoteAccountService" interface="com.bytesvc.service.IAccountService" group="org.bytesoft.bytetcc"
-		filter="compensable" loadbalance="compensable" cluster="failfast" retries="0" />
+		filter="compensable,contextext" loadbalance="compensable" cluster="failfast" retries="0" />
 
 	<!-- tcc型service可被远程consumer当做普通service调用, 此时： -->
 	<!-- 1、全局事务发起方为provider，即consumer不传播事务上下文. -->
