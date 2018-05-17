@@ -23,14 +23,14 @@ public class GenericTransferServiceImpl implements ITransferService {
 	@Transactional(rollbackFor = ServiceException.class)
 	public void transfer(String sourceAcctId, String targetAcctId, double amount) throws ServiceException {
 
-		TransactionContextRegistry.getInstance().getCurrentContextWrapper().addAttachment("p1", "参数1");
+		TransactionContextRegistry.getInstance().getCurrentContextWrapper().addAttachment("p1", "参数1 param1");
 		this.remoteAccountService.decreaseAmount(sourceAcctId, amount);
 		this.increaseAmount(targetAcctId, amount);
 
-		// throw new ServiceException("rollback");
+//		 throw new ServiceException("rollback");
 
-		String param1 = (String) TransactionContextRegistry.getInstance().getCurrentContextWrapper().getAttachment("p2");
-		System.out.println("p2 from provider: " + param1);
+		String param2 = (String) TransactionContextRegistry.getInstance().getCurrentContextWrapper().getAttachment("p2");
+		System.out.println("p2 from provider: " + param2);
 	}
 
 	private void increaseAmount(String acctId, double amount) throws ServiceException {

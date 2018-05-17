@@ -1,1 +1,1 @@
-contextext=org.bytesoft.bytetcc.supports.dubbo.spi.CompensableExtFilter
+contextext=org.bytesoft.bytetcc.supports.dubbo.spi.ContextExtFilter

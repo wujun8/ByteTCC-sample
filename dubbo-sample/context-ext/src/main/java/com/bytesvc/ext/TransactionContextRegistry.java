@@ -1,13 +1,14 @@
 package com.bytesvc.ext;
 
 import com.alibaba.dubbo.rpc.Invocation;
-import org.bytesoft.common.utils.ByteUtils;
-import org.bytesoft.common.utils.SerializeUtils;
+import com.alibaba.dubbo.rpc.Result;
+import org.bytesoft.bytetcc.supports.dubbo.CompensableBeanRegistry;
+import org.bytesoft.compensable.CompensableBeanFactory;
+import org.bytesoft.compensable.CompensableManager;
+import org.bytesoft.compensable.CompensableTransaction;
 import org.bytesoft.compensable.TransactionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
 
 public class TransactionContextRegistry {
     static final Logger logger = LoggerFactory.getLogger(TransactionContextRegistry.class);
@@ -39,44 +40,17 @@ public class TransactionContextRegistry {
         return contextWrapper;
     }
 
-    public TransactionContext getCurrentContext() {
-        TransactionContextWrapper contextWrapper = getCurrentContextWrapper();
-        return contextWrapper == null ? null : contextWrapper.getContext();
+    public static TransactionContext getCurrentContext() {
+        CompensableBeanRegistry beanRegistry = CompensableBeanRegistry.getInstance();
+        CompensableBeanFactory beanFactory = beanRegistry.getBeanFactory();
+        CompensableManager transactionManager = beanFactory.getCompensableManager();
+        CompensableTransaction transaction = transactionManager.getCompensableTransactionQuietly();
+        return transaction == null ? null : transaction.getTransactionContext();
     }
 
-    public TransactionContext readFromInvocation(Invocation invocation) {
-        String transactionContextContent = invocation.getAttachment(TransactionContext.class.getName());
-        byte[] byteArray = ByteUtils.stringToByteArray(transactionContextContent);
-        TransactionContext transactionContext = null;
-        try {
-            transactionContext = (TransactionContext) SerializeUtils.hessianDeserialize(byteArray);
-        } catch (IOException e) {
-            logger.warn("read TransactionContext from invocation failed", e);
-        }
-        return transactionContext;
-    }
-
-    public TransactionContextWrapper readWrapperFromInvocation(Invocation invocation) {
+    public static TransactionContextWrapper readWrapperFromDubboInvocation(Invocation invocation) {
         String contextWrapperContent = invocation.getAttachment(TransactionContextWrapper.class.getName());
-        if (contextWrapperContent != null) {
-            byte[] byteArray = ByteUtils.stringToByteArray(contextWrapperContent);
-            try {
-                return (TransactionContextWrapper) SerializeUtils.kryoDeserialize(byteArray);
-            } catch (IOException e) {
-                logger.warn("read TransactionContextWrapper from invocation failed", e);
-            }
-        }
-        return new TransactionContextWrapper(readFromInvocation(invocation));
+        return TransactionContextWrapper.readWrapper(contextWrapperContent, getCurrentContext());
     }
 
-    public String writeWrapperToString(TransactionContextWrapper contextWrapper) {
-        byte[] byteArray = null;
-        try {
-            byteArray = SerializeUtils.kryoSerialize(contextWrapper);
-        } catch (IOException e) {
-            logger.warn("write TransactionContextWrapper from invocation failed", e);
-            return null;
-        }
-        return ByteUtils.byteArrayToString(byteArray);
-    }
 }
