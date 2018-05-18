@@ -19,7 +19,6 @@ target
 /sample-provider/.project
 /sample-api/.classpath
 /sample-api/.project
-bytetcc
 /sample-provider/sample.log
 /sample-consumer/sample.log
 /dubbo/sample-api/.classpath
@@ -47,3 +46,5 @@ bytetcc
 
 .idea
 *.iml
+*.log
+sample.log*
