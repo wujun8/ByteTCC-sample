@@ -1,5 +1,6 @@
 package org.bytesoft.bytetcc.supports.dubbo.spi;
 
+import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.extension.Activate;
 import com.alibaba.dubbo.rpc.*;
 import com.bytesvc.ext.TransactionContextRegistry;
@@ -10,7 +11,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 
-@Activate(order = 1)
+@Activate(group = {Constants.PROVIDER, Constants.CONSUMER}, order = 10000)
 public class ContextExtFilter implements Filter {
 
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
