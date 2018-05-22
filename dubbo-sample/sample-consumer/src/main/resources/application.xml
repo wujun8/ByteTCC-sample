@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context" xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans    
+	   xmlns:context="http://www.springframework.org/schema/context" xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:tx="http://www.springframework.org/schema/tx" xmlns:task="http://www.springframework.org/schema/task"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd    
            http://www.springframework.org/schema/context    
            http://www.springframework.org/schema/context/spring-context-3.0.xsd    
            http://www.springframework.org/schema/aop    
            http://www.springframework.org/schema/aop/spring-aop-3.0.xsd    
            http://www.springframework.org/schema/tx 
-           http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+           http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 
 
 	<import resource="classpath:bytetcc-supports-dubbo.xml" />
 	<import resource="dubbo-consumer.xml" />
 
-	<context:component-scan base-package="com.bytesvc.service" />
+	<context:component-scan base-package="com.bytesvc.service,com.bytesvc.logging" />
+	<aop:aspectj-autoproxy />
+	<task:annotation-driven />
+	<task:executor id="loggerTaskExecutor" pool-size="3-100" queue-capacity="1000" />
 
 	<bean id="mysql1" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url" value="jdbc:mysql://127.0.0.1:3306/inst01" />
 		<property name="username" value="root" />
-		<property name="password" value="123456" />
+		<property name="password" value="password" />
 		<property name="maxTotal" value="50" />
 		<property name="initialSize" value="20" />
 		<property name="maxWaitMillis" value="60000" />
@@ -50,7 +53,7 @@
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url" value="jdbc:mysql://127.0.0.1:3306/inst02" />
 		<property name="username" value="root" />
-		<property name="password" value="123456" />
+		<property name="password" value="password" />
 		<property name="maxTotal" value="50" />
 		<property name="initialSize" value="20" />
 		<property name="maxWaitMillis" value="60000" />

@@ -17,6 +17,7 @@
 	</dependencies>
 
 	<modules>
+		<module>logger-etl</module>
 		<module>sample-api</module>
 		<module>sample-provider</module>
 		<module>sample-consumer</module>
