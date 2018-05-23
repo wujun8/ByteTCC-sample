@@ -17,8 +17,9 @@
 
 	<context:component-scan base-package="com.bytesvc.service,com.bytesvc.logging" />
 	<aop:aspectj-autoproxy />
-	<task:annotation-driven />
+	<task:annotation-driven exception-handler="asyncExceptionHandler"/>
 	<task:executor id="loggerTaskExecutor" pool-size="3-100" queue-capacity="1000" />
+	<bean id="asyncExceptionHandler" class="com.bytesvc.async.AsyncExceptionHandler"/>
 
 	<bean id="mysql1" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
