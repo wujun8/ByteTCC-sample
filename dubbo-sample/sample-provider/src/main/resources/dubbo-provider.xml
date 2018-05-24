@@ -9,13 +9,13 @@
 		  http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
 	<dubbo:application name="sample-provider" />
-	<dubbo:provider timeout="15000" filter="contextext"/>
+	<dubbo:provider timeout="15000" />
 	<dubbo:consumer check="false" timeout="15000" />
 	<dubbo:protocol name="dubbo" port="20882" />
 	<dubbo:registry address="zookeeper://localhost:2181" />
 
 	<dubbo:service interface="com.bytesvc.service.IAccountService" ref="accountService" group="org.bytesoft.bytetcc"
-		filter="compensable" loadbalance="compensable" cluster="failfast" retries="0" />
+		filter="compensable,contextext" loadbalance="compensable" cluster="failfast" retries="0" />
 
 	<!-- tcc型service可被远程consumer当做普通service调用, 此时： -->
 	<!-- 1、全局事务发起方为provider，即consumer不传播事务上下文. -->

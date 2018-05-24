@@ -61,6 +61,9 @@ public class ContextExtFilter implements Filter {
         }
         RpcResult rpcResult = (RpcResult) result;
         Object value = result.getValue();
+        if (value == null) {
+            value = new CompensableServiceFilter.InvocationResult();
+        }
         if (value instanceof CompensableServiceFilter.InvocationResult) {
             CompensableServiceFilter.InvocationResult wrapped = (CompensableServiceFilter.InvocationResult) value;
             if (wrapped.isFailure()) {

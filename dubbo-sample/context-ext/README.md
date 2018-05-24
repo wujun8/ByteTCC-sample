@@ -10,7 +10,9 @@
 3. 启动`dubbo-sample/sample-provider ``com.bytesvc.main.GenericConsumerMain```
 
 **注意：**
-consumer 配置 filter 顺序会影响 Context 传递
 
-    <dubbo:reference filter="compensable,contextext"/>
+配置 filter 顺序有要求
+
+    <dubbo:service filter="compensable,contextext" />
+    <dubbo:reference filter="contextext,compensable" />
 
