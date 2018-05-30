@@ -1,6 +1,7 @@
 package com.bytesvc.service.impl;
 
 import com.bytesvc.ext.TransactionContextRegistry;
+import com.bytesvc.ext.TransactionContextWrapper;
 import org.bytesoft.compensable.Compensable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -22,15 +23,18 @@ public class GenericTransferServiceImpl implements ITransferService {
 
 	@Transactional(rollbackFor = ServiceException.class)
 	public void transfer(String sourceAcctId, String targetAcctId, double amount) throws ServiceException {
-
-		TransactionContextRegistry.getInstance().getCurrentContextWrapper().addAttachment("p1", "参数1 param1");
+		TransactionContextWrapper contextWrapper = TransactionContextRegistry.getInstance().getCurrentContextWrapper();
+		contextWrapper.addAttachment("p1", "参数1 param1");
+		contextWrapper.addGlobalAttachment("gp1", "参数全局可见");
 		this.remoteAccountService.decreaseAmount(sourceAcctId, amount);
 		this.increaseAmount(targetAcctId, amount);
 
 //		 throw new ServiceException("rollback");
 
-		String param2 = (String) TransactionContextRegistry.getInstance().getCurrentContextWrapper().getAttachment("p2");
+		String param2 = (String) contextWrapper.getAttachment("p2");
 		System.out.println("p2 from provider: " + param2);
+		param2 = (String) contextWrapper.getAttachment("gp2");
+		System.out.println("gp2 from provider: " + param2);
 	}
 
 	private void increaseAmount(String acctId, double amount) throws ServiceException {

@@ -1,7 +1,6 @@
 package com.bytesvc.ext;
 
 import com.alibaba.dubbo.rpc.Invocation;
-import com.alibaba.dubbo.rpc.Result;
 import org.bytesoft.bytetcc.supports.dubbo.CompensableBeanRegistry;
 import org.bytesoft.compensable.CompensableBeanFactory;
 import org.bytesoft.compensable.CompensableManager;
@@ -26,15 +25,21 @@ public class TransactionContextRegistry {
         return instance;
     }
 
-
     public void setCurrentContextWrapper(TransactionContextWrapper contextWrapper) {
-        CURRENT.set(contextWrapper);
+        TransactionContextWrapper originalContextWrapper = CURRENT.get();
+        if (originalContextWrapper == null) {
+            CURRENT.set(contextWrapper);
+        } else {
+            //do not change the object ref
+            originalContextWrapper.setContext(contextWrapper.getContext());
+            originalContextWrapper.setAttachments(contextWrapper.getAttachments());
+        }
     }
 
     public TransactionContextWrapper getCurrentContextWrapper() {
         TransactionContextWrapper contextWrapper = CURRENT.get();
         if (contextWrapper == null) {
-            contextWrapper = new TransactionContextWrapper(null);
+            contextWrapper = new TransactionContextWrapper(getCurrentContext());
             CURRENT.set(contextWrapper);
         }
         return contextWrapper;

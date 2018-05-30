@@ -7,7 +7,7 @@
 验证步骤：
 1. 数据库、zookeeper 环境配置
 2. 启动 dubbo-sample/sample-consumer ```com.bytesvc.main.ProviderMain```
-3. 启动`dubbo-sample/sample-provider ``com.bytesvc.main.GenericConsumerMain```
+3. 启动`dubbo-sample/sample-provider ```com.bytesvc.main.GenericConsumerMain```
 
 **注意：**
 
